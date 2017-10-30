@@ -33,60 +33,55 @@ const QUIZ = [
     }
   ];  
   
+//Create global variable
+var currentQuestionNumberIndex = 0; 
 var currentNumberCorrect = 0;
-var currentNumberIncorrect = 0;
+
 
 //Listen for user to click the begin button 
 function handleBegin() {
   $('.begin').on('click', event => {
-    var currentQuestionNumberIndex = 0;
-    renderQuestion(currentQuestionNumberIndex);
+    renderQuestion();
   });
 }
 
 
-function renderQuestion(currentIndex) {
-  
-  console.log(currentIndex); 
+function renderQuestion() {
+  console.log("Line 48 current question number is still " + currentQuestionNumberIndex); 
   //Generate question number, question and its 4 possible answers...
-  var displayedQuestionNumber = currentIndex;
+  var displayedQuestionNumber = currentQuestionNumberIndex;
   displayedQuestionNumber++;
-  var questionObject = QUIZ[currentIndex];
+  var questionObject = QUIZ[currentQuestionNumberIndex];
   console.log(questionObject);
-  console.log(currentNumberCorrect);
-  console.log(currentNumberIncorrect);
   var question = questionObject.question;
   var answerOne = questionObject.answers[0];
   var answerTwo = questionObject.answers[1];
   var answerThree = questionObject.answers[2];
   var answerFour = questionObject.answers[3];
-  var correctAnswer = questionObject.correctAnswer;
   
   console.log("Line 74 object is " + question);
-        
+  
   //...and insert that HTML to the DOM
   $('.container').html(
-   `<form class="qa" id="js-qa-form">
+   `<div class="qa">
       <p class="progressNumber"><label for="progressNumber">Question # ${displayedQuestionNumber} of 5</label></p>
       <p class="question"><label for="question">${question}</label></p>
         <fieldset>
-          <section>
-            <p><input type="radio" class="js-answer" id="${answerOne}" name="answer"><label for="${answerOne}">${answerOne}</label></input></p>
-            <p><input type="radio" class="js-answer" id="${answerTwo}" name="answer"><label for="${answerTwo}">${answerTwo}</label></input></p>
-            <p><input type="radio" class="js-answer"" id="${answerThree}" name="answer"><label for="${answerThree}">${answerThree}</label></input><p/>
-            <p><input type="radio" class="js-answer" id="${answerFour}" name="answer"><label for="${answerFour}">${answerFour}</label></input></p>
-          </section>
+          <p><input type="radio" class="js-answer" id="${answerOne}" name="answer"><label for="${answerOne}">${answerOne}</label></input></p>
+          <p><input type="radio" class="js-answer" id="${answerTwo}" name="answer"><label for="${answerTwo}">${answerTwo}</label></input></p>
+          <p><input type="radio" class="js-answer"" id="${answerThree}" name="answer"><label for="${answerThree}">${answerThree}</label></input><p/>
+          <p><input type="radio" class="js-answer" id="${answerFour}" name="answer"><label for="${answerFour}">${answerFour}</label></input></p>
         </fieldset>
-    </form>`
+    </div>`
   );
 
-  handleAnswer(currentIndex);
+  handleAnswer();
 }
 
 
 //Listen for answer 
-function handleAnswer(currentIndex) {
-  console.log("Line 85 " + currentNumberCorrect);
+function handleAnswer() {
+  
   //Listen for user to answer question 
   $('.js-answer').on('click', event => {
     
@@ -98,17 +93,15 @@ function handleAnswer(currentIndex) {
     
     console.log("Line 107 chosen answer is " + userChosenAnswer);
     
-    evaluateAnswer(currentIndex, userChosenAnswer);
+    evaluateAnswer(userChosenAnswer);
   });
 }
     
 //Evaluate whether the chosen answer is right or wrong
-function evaluateAnswer(currentIndex, chosenAnswer) {
-    console.log(currentNumberCorrect);
-    console.log("Line 105 " + currentIndex); 
+function evaluateAnswer(chosenAnswer) {
+    
     //Create variable to compare
-    var questionObject = QUIZ[currentIndex];
-    console.log(questionObject);
+    var questionObject = QUIZ[currentQuestionNumberIndex];
     var correctAnswer = questionObject.correctAnswer;
     console.log("Line 117 correct answer is " + correctAnswer);
     
@@ -120,8 +113,8 @@ function evaluateAnswer(currentIndex, chosenAnswer) {
       //...and display the correct message and score ...
       $('.container').append(
         `<div class="correctMessage">
-          <p class="success"><label for="success">That's correct! Great job.</label></p>
-          <p class="score"><label for="score">${currentNumberCorrect} correct, ${currentNumberIncorrect} incorrect </label></p>
+          <p class="success"><label for="success">That's correct! Great job</label></p>
+          <p class="correctNumber"><label for="correctNumber">${currentNumberCorrect} correct </label></p>
         </div>`
       );
        
@@ -132,33 +125,30 @@ function evaluateAnswer(currentIndex, chosenAnswer) {
         
     else {
       
-      //If the answer is wrong, increase number of incorrect answers by one... 
-      currentNumberIncorrect++;
-      
-      //...and display the incorrect message with correct answer and score
+      //If the answer is wrong, display the incorrect message with correct answer and score
       $('.container').append(
         `<div class="incorrectMessage">
-          <p class="nope"><label for="nope">Sorry, that is not correct. The correct answer is ${correctAnswer}.</label></p>
-          <p class="score"><label for="score">${currentNumberCorrect} correct, ${currentNumberIncorrect} incorrect </label></p>
+          <p class="nope"><label for="nope">Sorry, that is not correct! The correct answer is ${correctAnswer}</label></p>
+          <p class="correctNumber"><label for="correctNumber">${currentNumberCorrect} correct</label></p>
         </div>`
       );
     }
     
-    console.log("Line 135 current question number is still " + currentIndex); 
+    console.log("Line 135 current question number is still " + currentQuestionNumberIndex); 
  
-    prepareForNextQuestion(currentIndex,correctAnswer); 
+    prepareForNextQuestion(correctAnswer); 
 }   
 
 
-function prepareForNextQuestion(currentIndex, correctAnswer) {    
+function prepareForNextQuestion(correctAnswer) {    
   
   //Add Next button if we are on questions 1 through 4
-  if (currentIndex < 4) {
+  if (currentQuestionNumberIndex < 4) {
     $('.container').append(
       `<button class="next" id="${correctAnswer}">Next Question --></button>`
     );
     
-      handleNextQuestion(currentIndex);
+      handleNextQuestion();
     }
     
     else {
@@ -170,7 +160,7 @@ function prepareForNextQuestion(currentIndex, correctAnswer) {
 
 
 //Listen for user to click next question button
-function handleNextQuestion(currentIndex) {
+function handleNextQuestion() {
     console.log("Adding handler for next event");
   $('.next').on('click', event => {
     console.log($(event.currentTarget).attr('id'));
@@ -179,12 +169,12 @@ function handleNextQuestion(currentIndex) {
     $('.container').html("");
     
     //...and increase question number index by one
-    currentIndex++;
+    currentQuestionNumberIndex++;
   
-    console.log("Line 146 current question number is " + currentIndex);
+    console.log("Line 146 current question number is " + currentQuestionNumberIndex);
     console.log("Line 148 current correct number is " + currentNumberCorrect);
     
-    renderQuestion(currentIndex);
+    renderQuestion();
   });
 }
 
@@ -192,44 +182,44 @@ function handleNextQuestion(currentIndex) {
 //Display final message with final score and add start again button
 function handleFinal() {
   
-  //Display final message & total score...
+  //Display final message & score...
   if (currentNumberCorrect === 5) {
     $('.container').append(
-        `<p class="totalScore"><label>Congratulations - you got all 5 right!</label></p>`
+        `<p class="score"><label>Congratulations - you got all 5 right!</label></p>`
       );
   }
   
   else if 
     (currentNumberCorrect === 4) {
     $('.container').append(
-        `<p class="totalScore"><label>Congratulations - you got 4 right of out 5!</label></p>`
+        `<p class="score"><label>Congratulations - you got 4 right of out 5!</label></p>`
       );
   }
      
   else if
     (currentNumberCorrect === 3) {
     $('.container').append(
-        `<p class="totalScore"><label>Not bad - you got 3 right of out 5!</label></p>`
+        `<p class="score"><label>Not bad - you got 3 right of out 5!</label></p>`
       );
   } 
   
   else if
     (currentNumberCorrect === 2) {
     $('.container').append(
-        `<p class="totalScore"><label>You got 2 right of out 5!</label></p>`
+        `<p class="score"><label>You got 2 right of out 5!</label></p>`
       );
   } 
   
   else if
     (currentNumberCorrect === 1) {
     $('.container').append(
-        `<p class="totalScore"><label>You got 1 right of out 5!</label></p>`
+        `<p class="score"><label>You got 1 right of out 5!</label></p>`
       );
   } 
   
   else {
     $('.container').append(
-        `<p class="totalScore"><label>You didn't get any right. Try again!</label></p>`
+        `<p class="score"><label>You didn't get any right. Try again!</label></p>`
       );
   } 
   
@@ -246,18 +236,16 @@ function startAgain() {
   $('.again').on('click', event => {
     
     //Reset variables 
+    var currentQuestionNumberIndex = 0;  
+    console.log(currentQuestionNumberIndex);
     var displayedQuestionNumber = 0;
     console.log(displayedQuestionNumber);
     var currentNumberCorrect = 0;
     console.log(currentNumberCorrect);
-    var currentNumberIncorrect = 0;
-    console.log(currentNumberIncorrect);
     var questionObject = QUIZ[0];
     console.log(questionObject);
-    var currentQuestionNumberIndex = 0;
     console.log(currentQuestionNumberIndex);
-    
-    renderQuestion(currentQuestionNumberIndex);
+    renderQuestion();
   });
 }
 
