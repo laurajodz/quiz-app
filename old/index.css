@@ -29,14 +29,14 @@ legend {
 
 button {
   display: block;
-  margin: 20px auto;
+  margin: 20px auto; 
   position: relative;
   cursor: pointer;
   padding: 10px;
   border: 1px white;
   border-radius: 10px;
   color: white;
-  background-color: dodgerblue;
+  background-color: dodgerblue; 
   opacity: 0.9;
 }
 
@@ -80,3 +80,4 @@ label {
 .incorrectMessage {
   background-color: red;
 }
+
