@@ -1,10 +1,14 @@
+ {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   background-image: url('http://wallpapercraft.net/wp-content/uploads/2016/10/Wallpapers-Dodger-Stadium-HD.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
-  background-color: dodgerblue;
+  background-color: #1E90FF;
   color: white;
   font-family: 'Raleway', sans-serif;
   padding: 20px;
@@ -23,24 +27,20 @@ h1 {
   font-size: 25px;
 }
 
-legend {
-  font-size: 20px;
-}
-
 button {
   display: block;
-  margin: 20px auto;
+  margin: 20px auto; 
   position: relative;
   cursor: pointer;
   padding: 10px;
   border: 1px white;
   border-radius: 10px;
   color: white;
-  background-color: dodgerblue;
+  background-color: #1E90FF;
   opacity: 0.9;
 }
 
-.submit, .next, .again {
+.next, .again {
   font-size: 16px;
 }
 
@@ -53,20 +53,11 @@ button {
   opacity: 0.9;
   padding: 10px;
   border-radius: 10px;
-  width: 70%;
-}
-
-.option {
-  text-align: left;
-  padding: 5px 0 10px 30px;
-}
-
-.js-answer, label {
-  cursor: pointer;
+  width: 50%;
 }
 
 label {
-  padding-left: 20px;
+  cursor: pointer;
 }
 
 .qa, .totalScore {
@@ -80,3 +71,4 @@ label {
 .incorrectMessage {
   background-color: red;
 }
+
